@@ -1,4 +1,4 @@
-# Rusteze: Redis Proxy Service
+# Rusteeze: Redis Proxy Service
 
 Rusteze is an asynchronous Redis proxy server written in Rust. It acts as an intermediary between clients and a backend Redis server, providing support for:
 
