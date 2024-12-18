@@ -34,6 +34,7 @@ jobs:
           name: rusteze-binary
           path: target/x86_64-unknown-linux-gnu/release/rusteze # Adjust path as needed
   release:
+    permissions: write-all
     runs-on: ubuntu-latest
     needs: build
     steps:
