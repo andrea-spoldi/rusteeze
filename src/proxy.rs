@@ -1,6 +1,5 @@
 use log::{error, info};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::io::{ReadHalf, WriteHalf};
 use tokio::net::TcpStream;
 
 #[derive(Clone)]
