@@ -6,6 +6,9 @@ Rusteze is an asynchronous Redis proxy server written in Rust. It acts as an int
 - Handling multiple client connections concurrently using Tokio's async runtime.
 - Seamless proxying of Redis commands.
 
+## Disclaimer
+This service is not ready for production use and has not been thoroughly tested. Use it at your own risk.
+
 ## Features
 - **Concurrency:** Handles multiple clients simultaneously.
 - **Extensibility:** Modular design for easy future enhancements (e.g., load balancing, connection pooling).
