@@ -1,4 +1,4 @@
-use log::{error, info};
+use log::info;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
