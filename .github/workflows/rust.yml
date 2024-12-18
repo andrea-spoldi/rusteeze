@@ -2,7 +2,8 @@ name: Rust
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - 'v*' # Trigger on pushes with tags starting with 'v'
   pull_request:
     branches: [ "main" ]
 
@@ -15,8 +16,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable # Or nightly, beta, etc.
+          override: true
+
+      - name: Build binary
+        run: cargo build --release --target x86_64-unknown-linux-gnu # Adjust target as needed
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: rusteze-binary
+          path: target/x86_64-unknown-linux-gnu/release/rusteze # Adjust path as needed
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: rusteze-binary
+          path: release
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: "This is a release of the rusteze project." # Customize release notes
+          draft: false # Set to true for draft releases
+          prerelease: false # Set to true for pre-release
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/rusteze # Adjust path as needed
+          asset_name: rusteze-$(date +%Y%m%d).tar.gz # Customize filename
+          asset_content_type: application/octet-stream # Or application/gzip if compressed
