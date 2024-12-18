@@ -59,7 +59,7 @@ async fn main() {
     info!("Forwarding to backend: {}", backend_addr);
 
     // Initialize the connection manager
-    let manager = ConnectionManager::new(listen_addr, backend_addr);
+    let manager = ConnectionManager::new(listen_addr, backend_addr, 10);
 
     // Run the connection manager
     if let Err(e) = manager.run().await {
